@@ -1,14 +1,12 @@
 
 import os
-import dash
+from dash import Dash, html, dcc, Input, Output
 import sqlite3
 import requests
-from dash import dcc
-from dash import html
 import pandas as pd
 import plotly.express as px
-from dash import Input, Output
 from bs4 import BeautifulSoup
+
 
 
 external_stylesheets = [
@@ -19,7 +17,7 @@ external_stylesheets = [
     },
 ]
 
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+app = Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
 
 app.title = "Final Exam"
@@ -273,4 +271,4 @@ def update_output(ex_2, ex_3, ex_4):
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server("0.0.0.0", debug=False, port=int(os.environ.get("PORT", 8000)))
