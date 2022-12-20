@@ -22,7 +22,7 @@ server = app.server
 
 app.title = "Final Exam"
 
-conn = sqlite3.connect("Final/hr")
+conn = sqlite3.connect("hr")
 
 main_query = pd.read_sql(
     "SELECT employees.first_name, jobs.job_title "
