@@ -80,6 +80,13 @@ def exercise_3(min, max):
 
     return fig
 
+def cleardf(element):
+    if element == "-":
+        return 0
+    else:
+        element = element[1:]
+        element = element.replace(",","")
+        return float(element)
 
 def scrape_data():
 
@@ -112,19 +119,12 @@ def scrape_data():
     df.columns = hd
     df.set_index("index", inplace=True)
     df.reset_index(inplace=True)
-
-    df['Same period 2021'] = df['Same period 2021'].str.replace('£', '')
-    df['Same period 2021'] = df['Same period 2021'].str.replace(',', '')
-    df['Same period 2021'] = df['Same period 2021'].str.replace(
-        '-', '0').astype(float)
-    df['6 months to19 Dec 2022'] = df['6 months to19 Dec 2022'].str.replace(
-        '£', '')
-    df['6 months to19 Dec 2022'] = df['6 months to19 Dec 2022'].str.replace(
-        ',', '').astype(float)
-    df['Same period 2020'] = df['Same period 2020'].str.replace('£', '')
-    df['Same period 2020'] = df['Same period 2020'].str.replace(
-        ',', '').astype(float)
-
+    
+    hd1 = hd[1:]
+    
+    for i in hd1:
+        df[i] = df[i].apply(cleardf)
+   
     df.loc[4] = ['Average', avg, avg, avg]
 
     return df
@@ -135,8 +135,10 @@ runner = scrape_data()
 years = runner.columns
 
 
-def exercise_4(year):
-    dframe = runner[year]
+def exercise_4(year1):
+    if len(year1) == 0:
+        year1 = year[-1]
+    dframe = runner[year1]
     fig = px.scatter(
         x=runner["index"], y=dframe, color=["green", "green", "green", "green", "black"], color_discrete_map="identity", symbol=["green", "green", "green", "green", "black"]
     )
@@ -195,10 +197,8 @@ fig_plot = html.Div(id="fig_plot", style={"margin": "20px"},
                     dcc.Dropdown(years[1:],
 
                                  value=years[-1],
-                                 placeholder="6 months to19 Dec 2022",
+                                 placeholder=years[-1],
                                  clearable=False,
-
-
                                  id="ex_4"
                                  ),
                 ]
